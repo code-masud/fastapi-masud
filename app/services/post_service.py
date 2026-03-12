@@ -49,6 +49,9 @@ def read_post(post_id: int, db: Session = Depends(get_db), current_user: UserRes
 
     db_post = post_query.filter(
         Post.id == post_id, Post.author == current_user.id).first()
+    
+    if not db_post:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Post id: {post_id} not found.')
     return db_post
 
 
